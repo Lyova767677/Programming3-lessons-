@@ -1,10 +1,11 @@
 {
-  "name": "programming3",
+  "name": "clear",
   "version": "1.0.0",
   "description": "tumo node",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -18,5 +19,6 @@
   "homepage": "https://github.com/Lyova767677/programming3#readme",
   "dependencies": {
     "express": "^4.16.4"
-  }
+  },
+  "devDependencies": {}
 }
