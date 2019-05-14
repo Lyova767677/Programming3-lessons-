@@ -45,48 +45,30 @@
 
 //  }
 //  window.onkeydown = keydown;
-function main() {
-    var socket = io();
-    var chatDiv = document.getElementById('chat');
-    var input = document.getElementById('message');
-    var button = document.getElementById('submit');
-    var del = document.getElementById('delete');
+var socket;
+function setup() {
+    createCanvas(600, 400);
+    background("#acacac");
 
-    function handleSubmit(evt) {
-        var val = input.value;
-        if (val != "") {
-            socket.emit("send message", val);
-        }
+    socket = io.connect("http://localhost:3000");
+    socket.on('mouse', newDrawing);
+}
+function newDrawing(data) {
+    noStroke();
+    fill(255, 0, 100);
+    ellipse(data.x, data.y, 20, 20)
+}
+function mouseDragged() {
+    console.log(mouseX + "," + mouseY);
+    var data = {
+        x: mouseX,
+        y: mouseY
     }
-    button.onclick = handleSubmit;
-    del.onclick = handleDelete;
-
-    function handleDelete(evt) {
-
-        socket.emit("delete message");
-
-    }
-  
-    function handleMessage(msg) {
-        var p = document.createElement('p');
-        p.innerText = msg;
-        chatDiv.appendChild(p);
-        input.value = "";
-    }
-    function DeleteFromDom(old) {
-        var old = document.getElementsByTagName('p');
-        //chatDiv.appendChild(p);
-
-        for (var i in old) {
-            if (old.length > 0) {
-                chatDiv.removeChild(old[i]);
-            }
-        }
-    }
-
-    socket.on('display message', handleMessage);
-    socket.on('delete from your message', DeleteFromDom);
+    socket.emit('mouse', data);
+    noStroke();
+    fill(255);
+    ellipse(mouseX, mouseY, 20, 20)
 }
 
 
-window.onload = main;  
+

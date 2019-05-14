@@ -24,7 +24,6 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-var messages = [];
 
 app.use(express.static("."));
 app.get('/', function (req, res) {
@@ -33,17 +32,17 @@ app.get('/', function (req, res) {
 server.listen(3000);
 
 
-io.on('connection', function (socket) {
-    for(var i in messages) {
-      io.sockets.emit("display message", messages[i]);
+io.sockets.on('connection', newConnectison);
+
+    function newConnection(socket) {
+        console.log('new connection: ' + socket.id)
+        socket.on('mouse' , mouseMsg);
+
+        function mouseMsg(data){
+            socket.broadcast.emit('mouse' , data);
+            console.log(data);
+        }
     }
-    socket.on("send message", function (data) {
-        messages.push(data);
-        io.sockets.emit("display message", data);
-    });
-    socket.on("delete message", function (data) {
-        messages = [];
-        io.sockets.emit("delete from your message", data);
-    });
- });
+
+
  
